@@ -12,6 +12,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+// define the colors as macros
 #define red    		31
 #define green  		32
 #define yellow 		33
@@ -20,14 +21,15 @@
 #define cyan   		36
 #define light_gray  37
 
-// If you're a Brit, here
+// If you're a Brit and you keep forgetting about "gray" vs "grey", here
 #ifdef UK
 #	define light_grey  37
 #	undef  light_gray
 #endif /* UK */
 
-int cprintf(unsigned char, const char*, ...);
-int cfprintf(void*, unsigned char, const char*, ...);
+// Function prototypes so that calling something before it is defined works
+int  cprintf(unsigned char, const char*, ...);
+int  cfprintf(void*, unsigned char, const char*, ...);
 void cnprintf(unsigned int, unsigned char, const char*, ...);
 void cnfputs(const char*, unsigned char, unsigned int, void*);
 
@@ -39,19 +41,21 @@ void cnfputs(const char*, unsigned char, unsigned int, void*);
 // c = the stream to write to, the rest of the variables are as above
 #define cfputs(a, b, c) 	fprintf(c, "\033[0;%dm%s\033[0m", b, a)
 #define cfputc(a, b, c) 	fprintf(c, "\033[0;%dm%c\033[0m", b, a)
-#define cnputs(a, b, c) 	cnfputs(a, b, c, stdout); putchar('\n')
+#define cnputs(a, b, c) 	cnfputs(a, b, c, stdout); putchar('\n')		// c = the length here
 #define cputc(a, b, c)  	cfputc(a, b, c) // Same as fcputc() 
 
+// Standard color print for formatted string
 int cprintf(unsigned char color, const char *fmt, ...) {
 	printf("\033[0;%dm", color);
 	va_list args;
 	va_start(args, fmt);
-	int charsWritten = vfprintf(stdout, fmt, args);
+	int charsWritten = vfprintf(stdout, fmt, args);			// vfprintf returns the number of chars written
 	va_end(args);
 	printf("\033[0m");
 	return charsWritten;
 }
 
+// cprintf(), but you get to chose the stream
 int cfprintf(void *stream, unsigned char color, const char *fmt, ...) {
 	fprintf(stream, "\033[0;%dm", color);
 	va_list args;
@@ -62,6 +66,7 @@ int cfprintf(void *stream, unsigned char color, const char *fmt, ...) {
 	return charsWritten;
 }
 
+// Specify how many characters to write to prevent buffer overflows (just in case)
 void cnprintf(unsigned int len, unsigned char color, const char *fmt, ...) {
 	char buf[len];
 	va_list args;
@@ -71,6 +76,7 @@ void cnprintf(unsigned int len, unsigned char color, const char *fmt, ...) {
   	va_end(args);
 }
 
+// colorful fputs(), but manually specify how many characters
 void cnfputs(const char *amsg, unsigned char color, unsigned int len, void *stream) {
 	fprintf(stream, "\033[0;%dm", color);
 	for (; len > 0 && *amsg != '\0'; *amsg++, --len)
