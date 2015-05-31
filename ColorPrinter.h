@@ -26,9 +26,9 @@
 #define cputchar(a, b)  printf("\033[0;%dm%c\033[0m", b, a)
 
 // c = the stream to write to, the rest of the variables are as above
-#define fcputs(a, b, c) fprintf(c, "\033[0;%dm%s\033[0m", b, a)
-#define fcputc(a, b, c) fprintf(c, "\033[0;%dm%c\033[0m", b, a)
-#define cputc(a, b, c)  fcputc(a, b, c) // Same as fcputc() 
+#define cfputs(a, b, c) fprintf(c, "\033[0;%dm%s\033[0m", b, a)
+#define cfputc(a, b, c) fprintf(c, "\033[0;%dm%c\033[0m", b, a)
+#define cputc(a, b, c)  cfputc(a, b, c) // Same as fcputc() 
 
 int cprintf(unsigned char color, const char *fmt, ...) {
 	printf("\033[0;%dm", color);
@@ -40,7 +40,7 @@ int cprintf(unsigned char color, const char *fmt, ...) {
 	return charsWritten;
 }
 
-int fcprintf(void *stream, unsigned char color, const char *fmt, ...) {
+int cfprintf(void *stream, unsigned char color, const char *fmt, ...) {
 	fprintf(stream, "\033[0;%dm", color);
 	va_list args;
 	va_start(args, fmt);
