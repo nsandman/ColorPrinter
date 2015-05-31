@@ -12,14 +12,23 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-// define the colors as macros
+// define the cross-platform colors as macros
 #define red    		31
 #define green  		32
 #define yellow 		33
-#define blue   		34
-#define purple 		35
 #define cyan   		36
 #define light_gray  37
+
+// On Macs, the colors are weird and screwed up. Fix it!
+#ifdef __APPLE__
+#	define blue 	94
+#	define purple	34
+#	define pink		35
+#else
+#	define blue 	34
+#	define purple 	35
+#	define pink		95
+#endif
 
 // If you're a Brit and you keep forgetting about "gray" vs "grey", here
 #ifdef UK
