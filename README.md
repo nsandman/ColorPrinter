@@ -55,16 +55,16 @@ Using is simple. In your C file, just do:
 
 This will give you access to these functions:
 
-* `cprintf()`
-* `cfprintf()`
-* `cnprintf`
-* `cputs()`
-* `cnputs()`
-* `cfputs()`
-* `cfnputs()`
-* `cputc()`
-* `cfputc()`
-* `cputchar()`
+* [`cprintf()`](#cprintf)
+* [`cfprintf()`](#cfnprintf)
+* [`cnprintf`](#cnprintf)
+* [`cputs()`](#cputs)
+* [`cnputs()`](#cnputs)
+* [`cfputs()`](#cfputs)
+* [`cfnputs()`](#cfnputs)
+* [`cputc()`](#cputc-and-cfputc)
+* [`cfputc()`](#cputc-and-cfputc)
+* [`cputchar()`](#cputchar)
 
 Now we will go through each of them individually.
 
