@@ -17,7 +17,7 @@
 #define green  		32
 #define yellow 		33
 #define cyan   		36
-#define light_gray  37
+#define light_gray	37
 
 // On Macs, the colors are weird and screwed up. Fix it!
 #ifdef __APPLE__
