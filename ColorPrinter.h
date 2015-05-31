@@ -31,7 +31,7 @@
 #	define dark_gray	237
 #	define olive		64
 #	define magenta		89
-#endif
+#endif /* NO256 */
 
 // On Macs, the colors are weird and screwed up.
 // Blue looks like purple.
@@ -78,7 +78,9 @@ unsigned char cfnputs(const char*, unsigned char, unsigned int, void*);
 #define cnputs(a, b, c) 		cfnputs(a, b, c, stdout); putchar('\n')		// c = the length here
 #define cputc(a, b, c)  		cfputc(a, b, c) // Same as fcputc() 
 
-#define crputs(a, b)			fprintf(stdout, "\033[38;5;%dm%s\033[0m\n", b, a);
+#ifndef NO256
+#	define crputs(a, b)			fprintf(stdout, "\033[38;5;%dm%s\033[0m\n", b, a);
+#endif /* NO256 */
 
 // Standard color print for formatted string
 int cprintf(unsigned char color, const char *fmt, ...) {
