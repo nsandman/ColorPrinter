@@ -3,6 +3,23 @@ ColorPrinter is an easy, cross-platform library to print in color.
 
 Printing in color may not seem like a big deal, but this can be a pain to implement perfectly. ColorPrinter is small, has little dependence on the standard library (only stdarg.h and stdio.h are used), and has a familiar syntax. Also, ColorPrinter is fully header-based, so no new ".c" files need to be compiled.
 
+##"ColourPrinter"
+I'm not going to provide a direct link to this repository (so they don't get more traffic), but the first person on the blacklist has copied my README and a lot of my code. So while this repo may look like a shameless ripoff, it's not. Here are two links; each is the commit where the README is made (or changed to look like mine, in his case)
+
+* **nsandman09/ColorPrinter**: [Commit *b7aa57d*](https://github.com/nsandman09/ColorPrinter/commit/b7aa57d3cdbc1e55ed4aed16e12c3436dcfac135) **Date**: Sun May 31 03:50:56 2015 -0700
+* **vidurgupta01/ColourPrinter**: [Commit *6325945*](https://github.com/vidurgupta01/ColourPrinter/commit/632594506acd40a1b2e3b1792f652a885e46f23a) **Date**: Sun May 31 10:54:36 2015 -0700
+
+So... yeah. Also here's where he made it a header-only library (mine was from the start):
+
+* **vidurgupta01/ColorPrinter**: [Commit *270e5ca*](https://github.com/vidurgupta01/ColourPrinter/commit/270e5ca2dcb973d7ea762859c0af54c9f9961e83) **Date**: Sun May 31 10:22:02 2015 -0700
+
+Here's where he redefined his functions as macros (six of mine were macros from the start; the link to my repo has the first macro):
+
+* **nsandman09/ColorPrinter**: [Commit *05cd33f*](https://github.com/nsandman09/ColorPrinter/commit/05cd33f0c098cb75928b135f3658f3560c5ad539) **Date**: Sun May 31 00:23:38 2015 -0700
+* **vidurgupta01/ColorPrinter**: [Commit *3cdceb6*](https://github.com/vidurgupta01/ColourPrinter/commit/3cdceb688406d5510340e3ec36dd8edbff24cc15) **Date**: Sun May 31 10:23:15 2015 -0700
+
+So... I think we know which repo is the shameless rip-off.
+
 ###Colors Included
 Many colors are included, but if you'd like, you can `#define` your own! However, the ones that come by default are:
 
