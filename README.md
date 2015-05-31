@@ -57,7 +57,7 @@ This will give you access to these functions:
 
 * [`cprintf()`](#cprintf)
 * [`cfprintf()`](#cfprintf)
-* [`cnprintf`](#cnprintf)
+* [`cnprintf()`](#cnprintf)
 * [`cputs()`](#cputs)
 * [`cnputs()`](#cnputs)
 * [`cfputs()`](#cfputs)
