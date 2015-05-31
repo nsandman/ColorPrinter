@@ -1,0 +1,49 @@
+NSPL (Noah Sandman Public Source License) v1
+by Noah Sandman
+
+0. Language
+	a. The term "you" refers to the licensee.
+	b. Terms used version 1 (one) of the Noah Sandman Public Source License are as follows:
+		i. "The Project" hereby refers to any copyrightable files owned by or contributed to by you under the effect of any version of the NSPL.
+		ii. "The Code" or "Code" hereby refers to any copyrightable files pertaining to or involved with the compilation, interpretation, distribution, or creation of The Project, or any files that result from the aforementioned actions.
+		iii. "The Author" or "Author" hereby refers to any business, company, organization or individual that has modified The Code. "The Author" includes you unless otherwise specified.
+		iv. "The Original Author" refers to the individual who made The Code available under the NSPL.
+		v. The "original" Code is the code that was provided by The Author where The Author does not include you.
+		vi. "to modify" is to alter anything in The Code from its original state, and "modified" Code is Code that has been modified by The Author.
+		vii. "The Blacklist" hereby refers to a file somehow accessible using some form of The Code that lists full names and e-mail addresses (if it is publicly known) along with any relevant metadata in a human-readable format (and optionally, a machine-readable format). A "Blacklistee" is an individual or organization which is mentioned in The Blacklist or affiliated with an individual or organization mentioned in The Blacklist, and a "Non-Blacklistee" is an individual or organization which is not mentioned in The Blacklist.
+		viii. The "source" form of The Code hereby refers to a form of The Code which can:
+			- Be read by humans
+			- Be compiled by a compiler or interpreted by an interpreter
+			- Is the preferred form for modifying The Code
+		ix. The "binary" form of The Code hereby refers to a form which:
+			- Is produced when compiling the source form of The Code with a compiler
+			- Is not human-readable
+			- Is NOT a plain-text ASCII file
+			- Includes but is not limited to one of the following formats, or any derivatives of them:
+				* Mach-O, which is short for Mach Object (Format)
+				* ELF, which is short for Executable and Linkable Format
+				* COFF, which is short for Common Object File format
+				* PE, which is short for Portable Executable
+				* COM, which is used by MS-DOS
+				* "flat" binaries, which generally (but not always) have the ".bin" extension
+				* a.out
+
+1. Written Permission from The Original Author
+	a. Written permission from The Original Author refers to a notice from The Original Author, conveyed in one of the following forms:
+		i. A Written Letter. A Written Letter must have been mailed using a government-operated postal service so that it has an official record of where it was mailed from and when it was mailed.
+		ii. An Electronic Mail. An Electronic Mail must have been sent using an SMTP server where neither the Original Author nor the recipient of the Electronic Mail have access to the configuration.
+
+		Both the recipient of any of these forms of Written Permission and the Original Author who is granting it must have an identical copy of the Written Permission for it to apply.
+
+2. Permissions Granted by Version 1 of the NSPL
+	a. Permissions Granted to Non-Blacklistees Without Written Permission from The Original Author
+		i. The Code may be redistributed in modified or original binary or source form provided a copy of this license is distributed along with it.
+		ii. The Code may NOT be sold directly. However, products where The Code makes up less than 75% of it in source form may be sold.
+		iii. The Code may not be relicensed or sublicensed by anybody except The Original Author.
+		All of these permissions are granted unless you or st least one of your sponsoring organization (if one or more exist) are mentioned in The Blacklist.
+	b. Permissions granted to both Blacklistees and Non-Blacklistees
+		i. Both Blacklistees and Non-Blacklistees may execute The Code in binary form.
+		ii. Blacklistees may modify The Code, but they may not distribute their modified version of The Code. Their version of The Code must stay on the machine it was originally modified from.
+
+3. Retroactive Changes to the NSPL
+	a. If a new version of the NSPL is released, all projects that have not specified not to have their licenses upgraded will be subject to the terms of the latest version of the NSPL. Any versions of The Code, even derivative projects and local copies of The Code (even on non-networked machines), will be subject to the new terms of the NSPL. Any actively maintained redistributions of The Code which have not made necessary modifications within 30 (thirty) days are in direct violation of the NSPL.
