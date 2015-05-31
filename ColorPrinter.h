@@ -20,7 +20,6 @@
 #define cyan   36
 #define white  37
 
-int strlen(const char*);
 int cprintf(unsigned char, const char*, ...);
 int cfprintf(void*, unsigned char, const char*, ...);
 void cnprintf(unsigned int, unsigned char, const char*, ...);
@@ -38,13 +37,6 @@ void cnfputs(const char*, unsigned char, unsigned int, void*);
 
 #define cnputs(a, b, c) cnfputs(a, b, c, stdout); \
 						putchar('\n')
-
-// To avoid including ALL of string.h for one function
-int strlen(const char *str) {
-	int i = 0;
-	while(str[++i]);
-	return i;
-}
 
 int cprintf(unsigned char color, const char *fmt, ...) {
 	printf("\033[0;%dm", color);
@@ -78,9 +70,8 @@ void cnprintf(unsigned int len, unsigned char color, const char *fmt, ...) {
 }
 
 void cnfputs(const char *amsg, unsigned char color, unsigned int len, void *stream) {
-	int y = strlen(amsg);
 	fprintf(stream, "\033[0;%dm", color);
-	for (; len > 0 || len > y; *amsg++, --len)
+	for (; len > 0 && *amsg != '\0'; *amsg++, --len)
 		putc(*amsg, stream);
 	fputs("\033[0m", stream);
 }
