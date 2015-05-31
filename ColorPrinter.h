@@ -9,8 +9,8 @@
 #ifndef _COLORPRINTER_H
 #define _COLORPRINTER_H
 
-#include <stdarg.h>
-#include <stdio.h>
+#include <stdarg.h>		// va_list, va_start(), va_end()
+#include <stdio.h>		// printf(), vfprintf(), vsnprintf(), putc(), fprintf(), fputs()
 
 // define the cross-platform colors as macros
 #define red    			31
@@ -55,17 +55,17 @@
 int  cprintf(unsigned char, const char*, ...);
 int  cfprintf(void*, unsigned char, const char*, ...);
 void cnprintf(unsigned int, unsigned char, const char*, ...);
-void cnfputs(const char*, unsigned char, unsigned int, void*);
+void cfnputs(const char*, unsigned char, unsigned int, void*);
 
 // Everything with a fixed number of args is a macro, cuz space = saved. Yay!
 // a = message, b = color
 #define cputs(a, b)     	printf("\033[0;%dm%s\033[0m\n", b, a)
-#define cputchar(a, b)  	printf("\033[0;%dm%c\033[0m", b, a)
+#define cputchar(a, b)  	cputc(a, b, stdout)
 
 // c = the stream to write to, the rest of the variables are as above
 #define cfputs(a, b, c) 	fprintf(c, "\033[0;%dm%s\033[0m", b, a)
 #define cfputc(a, b, c) 	fprintf(c, "\033[0;%dm%c\033[0m", b, a)
-#define cnputs(a, b, c) 	cnfputs(a, b, c, stdout); putchar('\n')		// c = the length here
+#define cnputs(a, b, c) 	cfnputs(a, b, c, stdout); putchar('\n')		// c = the length here
 #define cputc(a, b, c)  	cfputc(a, b, c) // Same as fcputc() 
 
 // Standard color print for formatted string
@@ -101,7 +101,7 @@ void cnprintf(unsigned int len, unsigned char color, const char *fmt, ...) {
 }
 
 // colorful fputs(), but manually specify how many characters
-void cnfputs(const char *amsg, unsigned char color, unsigned int len, void *stream) {
+void cfnputs(const char *amsg, unsigned char color, unsigned int len, void *stream) {
 	fprintf(stream, "\033[0;%dm", color);
 	for (; len > 0 && *amsg != '\0'; *amsg++, --len)
 		putc(*amsg, stream);

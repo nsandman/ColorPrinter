@@ -11,6 +11,6 @@ int main() {
 	cputc('c', light_blue, stdout);
 	putchar('\n');
 	cnputs("Use cnputs() to prevent buffer overflow!", bright_red, 40);
-	cnfputs("And, of course, cnfputs() for other streams.\n", pink, 45, stderr);
+	cfnputs("And, of course, cfnputs() for other streams.\n", pink, 45, stderr);
 	cnprintf(44, cyan, "And use cnprintf() with %s strings!\n", "formatted");
 }
