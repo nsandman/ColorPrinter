@@ -20,9 +20,15 @@
 #define cyan   36
 #define white  37
 
-// cputs()
-#define cputs(a, b) printf("\033[0;%dm%s\033[0m\n", b, a)
+// Everything with a fixed number of args is a macro, cuz space = saved. Yay!
+// a = message, b = color
+#define cputs(a, b)     printf("\033[0;%dm%s\033[0m\n", b, a)
+#define cputchar(a, b)  printf("\033[0;%dm%c\033[0m", b, a)
+
+// c = the stream to write to, the rest of the variables are as above
 #define fcputs(a, b, c) fprintf(c, "\033[0;%dm%s\033[0m", b, a)
+#define fcputc(a, b, c) fprintf(c, "\033[0;%dm%c\033[0m", b, a)
+#define cputc(a, b, c)  fcputc(a, b, c) // Same as fcputc() 
 
 int cprintf(unsigned char color, const char *fmt, ...) {
 	printf("\033[0;%dm", color);
