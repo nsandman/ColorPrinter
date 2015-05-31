@@ -23,11 +23,11 @@
 #ifdef __APPLE__
 #	define blue 	94
 #	define purple	34
-#	define pink		35
+#	define pink 	35
 #else
 #	define blue 	34
 #	define purple 	35
-#	define pink		95
+#	define pink 	95
 #endif
 
 // If you're a Brit and you keep forgetting about "gray" vs "grey", here
