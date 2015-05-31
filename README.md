@@ -11,12 +11,12 @@ I'm not going to provide a direct link to this repository (so they don't get mor
 
 So... yeah. Also here's where he made it a header-only library (mine was from the start):
 
-* **vidurgupta01/ColorPrinter**: [Commit *270e5ca*](https://github.com/vidurgupta01/ColourPrinter/commit/270e5ca2dcb973d7ea762859c0af54c9f9961e83) **Date**: Sun May 31 10:22:02 2015 -0700
+* **vidurgupta01/ColourPrinter**: [Commit *270e5ca*](https://github.com/vidurgupta01/ColourPrinter/commit/270e5ca2dcb973d7ea762859c0af54c9f9961e83) **Date**: Sun May 31 10:22:02 2015 -0700
 
 Here's where he redefined his functions as macros (six of mine were macros from the start; the link to my repo has the first macro):
 
 * **nsandman09/ColorPrinter**: [Commit *05cd33f*](https://github.com/nsandman09/ColorPrinter/commit/05cd33f0c098cb75928b135f3658f3560c5ad539) **Date**: Sun May 31 00:23:38 2015 -0700
-* **vidurgupta01/ColorPrinter**: [Commit *3cdceb6*](https://github.com/vidurgupta01/ColourPrinter/commit/3cdceb688406d5510340e3ec36dd8edbff24cc15) **Date**: Sun May 31 10:23:15 2015 -0700
+* **vidurgupta01/ColourPrinter**: [Commit *3cdceb6*](https://github.com/vidurgupta01/ColourPrinter/commit/3cdceb688406d5510340e3ec36dd8edbff24cc15) **Date**: Sun May 31 10:23:15 2015 -0700
 
 So... I think we know which repo is the shameless rip-off.
 
