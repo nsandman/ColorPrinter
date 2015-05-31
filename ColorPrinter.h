@@ -10,7 +10,6 @@
 #define _COLORPRINTER_H
 
 #include <stdarg.h>
-#include <string.h>
 #include <stdio.h>
 
 #define red    31
@@ -21,6 +20,7 @@
 #define cyan   36
 #define white  37
 
+int strlen(const char*);
 int cprintf(unsigned char, const char*, ...);
 int cfprintf(void*, unsigned char, const char*, ...);
 void cnprintf(unsigned int, unsigned char, const char*, ...);
@@ -36,7 +36,15 @@ void cnfputs(const char*, unsigned char, unsigned int, void*);
 #define cfputc(a, b, c) fprintf(c, "\033[0;%dm%c\033[0m", b, a)
 #define cputc(a, b, c)  cfputc(a, b, c) // Same as fcputc() 
 
-#define cnputs(a, b, c) cnfputs(a, b, c, stdout); putchar('\n')
+#define cnputs(a, b, c) cnfputs(a, b, c, stdout); \
+						putchar('\n')
+
+// To avoid including ALL of string.h for one function
+int strlen(const char *str) {
+	int i = 0;
+	while(str[++i]);
+	return i;
+}
 
 int cprintf(unsigned char color, const char *fmt, ...) {
 	printf("\033[0;%dm", color);
