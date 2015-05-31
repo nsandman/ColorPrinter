@@ -29,19 +29,25 @@
 // Blue looks like purple.
 // Purple looks like pink.
 // So just add pink while we're at it.
-#ifdef __APPLE__
-#	define blue 	94
-#	define purple	34
-#	define pink 	35
+
+// However, it's also possible to manually fix the colors
+// using Terminal preferences, so if the user has, they can
+// define MAC_OVERRIDE at compile time with gcc (or probably clang)
+#if defined(__APPLE__) && !defined(MAC_OVERRIDE)
+#	define blue 		94
+#	define purple		34
+#	define pink 		35
+// Uncomment to give a notice that Mac colors are different.
+// #warning "ColorPrinter: You're building on a Mac! Just so you know, colors (read: pink and purple) will be a bit different!"
 #else
-#	define blue 	34
-#	define purple 	35
-#	define pink 	95
+#	define blue 		34
+#	define purple 		35
+#	define pink 		95
 #endif
 
 // If you're a Brit and you keep forgetting about "gray" vs "grey", here
 #ifdef UK
-#	define light_grey  37
+#	define light_grey	37
 #	undef  light_gray
 #endif /* UK */
 
