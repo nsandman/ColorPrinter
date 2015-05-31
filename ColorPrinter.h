@@ -20,23 +20,27 @@
 #define cyan   36
 #define white  37
 
-int colorPrint(unsigned char color, const char *fmt, ...) {
+// cputs()
+#define cputs(a, b) printf("\033[0;%dm%s\033[0m\n", b, a)
+#define fcputs(a, b, c) fprintf(c, "\033[0;%dm%s\033[0m", b, a)
+
+int cprintf(unsigned char color, const char *fmt, ...) {
 	printf("\033[0;%dm", color);
 	va_list args;
 	va_start(args, fmt);
 	int charsWritten = vfprintf(stdout, fmt, args);
 	va_end(args);
-	puts("\033[0m");
+	printf("\033[0m");
 	return charsWritten;
 }
 
-int fcolorPrint(void *stream, unsigned char color, const char *fmt, ...) {
+int fcprintf(void *stream, unsigned char color, const char *fmt, ...) {
 	fprintf(stream, "\033[0;%dm", color);
 	va_list args;
 	va_start(args, fmt);
 	int charsWritten = vfprintf(stream, fmt, args);
 	va_end(args);
-	fputs("\033[0m\n", stream);
+	fputs("\033[0m", stream);
 	return charsWritten;
 }
 
