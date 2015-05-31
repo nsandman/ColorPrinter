@@ -56,7 +56,7 @@ Using is simple. In your C file, just do:
 This will give you access to these functions:
 
 * [`cprintf()`](#cprintf)
-* [`cfprintf()`](#cfnprintf)
+* [`cfprintf()`](#cfprintf)
 * [`cnprintf`](#cnprintf)
 * [`cputs()`](#cputs)
 * [`cnputs()`](#cnputs)
