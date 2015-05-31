@@ -36,16 +36,20 @@ Many colors are included, but if you'd like, you can `#define` your own! However
 1. light blue
 1. bright yellow
 1. white
+2. orange
+3. dark gray
+4. olive
+5. magenta
 
 ###Options
 On OSX in the default Terminal palette, the colors do not *exactly* map to what is expected. Blue looks more like a purple, and purple is more like pink.
 So, ColorPrinter remaps these colors so that they appear like themselves.
 
-However, another fix to this "problem" of unconventional colors is changing it in the Terminal settings menu. If that was done by the user, the remapped colors will look off. 
-So, all one needs to do to fix this is to define `MAC_OVERRIDE`. This will use the standard bash colors instead of the remapped OSX ones.
+However, another fix to this "problem" of unconventional colors is changing it in the Terminal settings menu. If that was done by the user, the remapped colors will look off. So, all one needs to do to fix this is to define `MAC_OVERRIDE`. This will use the standard bash colors instead of the remapped OSX ones.
 
-Also, if you prefer the British "grey" spelling (as opposed to the American "gray" spelling), just define `UK`. This will
-`#undef` light_gray and `#define` light_grey.
+Also, if your terminal does not support 256 colors, define `NO256`.
+
+If you prefer the British "grey" spelling (as opposed to the American "gray" spelling), just define `UK`. This will `#undef` light_gray and dark_gray and `#define` light_grey and dark_grey.
 
 ###How to Use
 Using is simple. In your C file, just do:
