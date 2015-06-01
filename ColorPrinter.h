@@ -37,8 +37,8 @@ color_t colors[] = {
 #define light_gray				4
 
 #define bright_red 				5
-#define bright_green				6 
-#define bright_yellow				7
+#define bright_green			6 
+#define bright_yellow			7
 #define light_blue				8
 #define white					9
 
@@ -76,11 +76,17 @@ color_t colors[] = {
 #	undef  dark_gray
 #endif // UK
 
+size_t strlen(const char*);
 void startprint(color_t, FILE*);
-int  cfputs(const char*, color_t, FILE*);
 int  cfnputs(const char*, color_t, size_t, FILE*);
 int  cfprintf(FILE*, color_t, const char*, ...);
 int  cfnprintf(FILE*, color_t, size_t, const char*, ...);
+
+size_t strlen(const char *str) {
+	int i;
+	while(str[++i]);
+	return i;
+}
 
 #define endprint(s) fputs("\033[0m", s)		// Reset to default color
 void startprint(color_t c, FILE *s) {
@@ -88,13 +94,6 @@ void startprint(color_t c, FILE *s) {
 		fprintf(s, "\033[0;%dm", colors[c]);
 	else
 		fprintf(s, "\033[38;5;%dm", colors[c]);	
-}
-
-int cfputs(const char *msg, color_t c, FILE *s) {
-	startprint(c, s);
-	fputs(msg, s);
-	endprint(s);
-	return 0;
 }
 
 int cfnputs(const char *m, color_t c, size_t n, FILE *s) {
@@ -113,13 +112,13 @@ int cfprintf(FILE *s, color_t c, const char *fmt, ...) {
 	return w;
 }
 
-int cnfprintf(FILE *s, color_t c, size_t n, const char *fmt, ...) {
+int cfnprintf(FILE *s, color_t c, size_t n, const char *fmt, ...) {
 	char buf[n];
 	va_list arg;
 	va_start(arg, fmt);
 	int w = vsnprintf(buf, n, fmt, arg);
 	va_end(arg);
-	cfputs(buf, c, s);
+	cfnputs(buf, c, n, s);
 	return w;
 }
 
@@ -127,7 +126,7 @@ int cnfprintf(FILE *s, color_t c, size_t n, const char *fmt, ...) {
 #define cputc(m, c, s)			startprint(c, s); putc(m, s); endprint(s)
 #define cfputc(a, b, c)			cputc(a, b, c)
 #define cputchar(m, c)			cputc(m, c, stdout)
-
+#define cfputs(a, b, c) 		cfnputs(a, b, strlen(a), c)
 #define cputs(m, c) 			cfputs(m, c, stdout); \
 								putchar('\n');
 
@@ -135,6 +134,6 @@ int cnfprintf(FILE *s, color_t c, size_t n, const char *fmt, ...) {
 								putchar('\n');
 
 #define cprintf(c, f, ...) 		cfprintf(stdout, c, f, __VA_ARGS__)
-#define cnprintf(c, n, f, ...)	cnfprintf(stdout, c, n, f, __VA_ARGS__)
+#define cnprintf(c, n, f, ...)	cfnprintf(stdout, c, n, f, __VA_ARGS__)
 
 #endif // _COLORPRINTER_H

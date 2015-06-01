@@ -110,9 +110,9 @@ It is based off the C function `fputs()`.
 
 ####`cfputs()`
 ```c
-int cfputs(const char *msg, color_t c, FILE *s)
+#define cfputs(a, b, c) 		cfnputs(a, b, strlen(a), c)
 ```
-This function writes string *msg* to stream *s* with color *c*.
+This function writes string *a* to stream *c* with color *b*.
 It is based off the C function `fputs()`.
 
 ####`cfnputs()`
