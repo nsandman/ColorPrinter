@@ -1,20 +1,13 @@
 #include "ColorPrinter.h"
 
 int main() {
-	cputs("This is output to stdout.", bright_green);
-	cfputs("This is output to stderr!\n", red, stderr);
-	cprintf(purple, "%s works with both of these streams!\n", "Formatting");
-	cfprintf(stderr, blue, "Isn't that %s! And yes, numbers work %d :P\n", "something", 2);
-	cputs("It even works for single characters:", green);
-	cputchar('g', pink);
-	cfputc('c', yellow, stdout);
-	cputc('c', light_blue, stdout);
+	cfputs("This is printed to stderr!\n", green, stderr);
+	cputs("And this is stdout!", blue);
+	cputchar('g', magenta);
+	cputchar('c', cyan);
+	cputchar('c', yellow);
 	putchar('\n');
-	cnputs("Use cnputs() to prevent buffer overflow!", bright_red, 40);
-	cfnputs("And, of course, cfnputs() for other streams.\n", pink, 45, stderr);
-	cnprintf(44, cyan, "And use cnprintf() with %s strings!\n", "formatted");
-	crputs("Use 256 colors if it's supported! (That's how this is orange!)", orange);
-	crputs("It even has olive...", olive);
-	crputs("And magenta!", magenta);
+	cfprintf(stderr, orange, "It works with %s strings %d!\n", "formatted", 2);
+	cnprintf(yellow, 57, "Use %s or %s to avoid buffer overflows!\n", "cn(f)printf", "cn(f)puts");
 	return 0;
 }

@@ -9,138 +9,134 @@
 #ifndef _COLORPRINTER_H
 #define _COLORPRINTER_H
 
-#include <assert.h>
-#include <stdarg.h>		// va_list, va_start(), va_end()
-#include <stdio.h>		// vfprintf(), vsnprintf(), putc(), fprintf(), fputs()
+#include <stdarg.h>
+#include <stdio.h>
 
-// define the cross-platform colors as macros
-#define red    			31
-#define green  			32
-#define yellow 			33
-#define cyan   			36
-#define light_gray		37
+typedef unsigned char color_t;
 
-#define bright_red 		91
-#define bright_green	92 
-#define bright_yellow	93
-#define light_blue		96
-#define white			97
+// How many ANSI colors offset the xterm-256 ones?
+#define ANSI_OFFSET 	15
+color_t colors[] = {
+	// ANSI colors
+	31, 32, 33, 36, 37, 91, 92, 93, 96, 97,
+	// blue
+	94, 34,
+	//purple
+	34, 25,
+	// pink
+	35, 95,
+	// 256-color
+	208, 237, 64, 89
+};
+
+// define the colors as macros
+#define red    					0
+#define green  					1
+#define yellow 					2
+#define cyan   					3
+#define light_gray				4
+
+#define bright_red 				5
+#define bright_green			6 
+#define bright_yellow			7
+#define light_blue				8
+#define white					9
 
 #ifndef NO256
-#	define orange 		208
-#	define dark_gray	237
-#	define olive		64
-#	define magenta		89
+#	define orange 				ANSI_OFFSET + 1
+#	define dark_gray			ANSI_OFFSET + 2
+#	define olive				ANSI_OFFSET + 3
+#	define magenta				ANSI_OFFSET + 4
 #endif /* NO256 */
 
-// On Macs, the colors are weird and screwed up.
-// Blue looks like purple.
-// Purple looks like pink.
-// So just add pink while we're at it.
-
-// However, it's also possible to manually fix the colors
-// using Terminal preferences, so if the user has, they can
-// define MAC_OVERRIDE at compile time with gcc (or probably clang)
+/*
+ * On Macs, the colors are weird and screwed up.
+ * Blue looks like purple.
+ * Purple looks like pink.
+ * So just add pink while we're at it.
+ * However, it's also possible to manually fix the colors
+ * using Terminal preferences, so if the user has, they can
+ * define MAC_OVERRIDE at compile time with gcc (or probably clang)
+ */
 #if defined(__APPLE__) && !defined(MAC_OVERRIDE)
-#	define blue 		94
-#	define purple		34
-#	define pink 		35
-// Uncomment to give a notice that Mac colors are different.
-// #warning "ColorPrinter: You're building on a Mac! Just so you know, colors (read: pink and blue) will be a bit different!"
+#	define blue 				10
+#	define purple				12
+#	define pink 				14
 #else
-#	define blue 		34
-#	define purple 		35
-#	define pink 		95
+#	define blue 				11
+#	define purple 				13
+#	define pink 				15
 #endif /* __APPLE__ && !MAC_OVERRIDE */
 
 // If you're a Brit and you keep forgetting about "gray" vs "grey", here
 #ifdef UK
-#	define light_grey	37
-#	define dark_grey	237
+#	define light_grey			light_gray
+#	define dark_grey			dark_gray
 #	undef  light_gray
 #	undef  dark_gray
 #endif /* UK */
 
-// Function prototypes so that calling something before it is defined works
-int  		  cprintf(unsigned char, const char*, ...);
-int  		  cfprintf(void*, unsigned char, const char*, ...);
-unsigned char cnprintf(unsigned int, unsigned char, const char*, ...);
-unsigned char cfnputs(const char*, unsigned char, unsigned int, void*);
+void startprint(color_t, FILE*);
+int  cfputs(const char*, color_t, FILE*);
+int  cfnputs(const char*, color_t, size_t, FILE*);
+int  cfprintf(FILE*, color_t, const char*, ...);
+int  cfnprintf(FILE*, color_t, size_t, const char*, ...);
 
-// Everything with a fixed number of args is a macro, cuz space = saved. Yay!
-// a = message, b = color
-#define cputs(a, b)     		b <= 97 ? fprintf(stdout, "\033[0;%dm%s\033[0m\n", b, a) : -1
-#define cputchar(a, b)  		b <= 97 ? cputc(a, b, stdout) : -1
-
-// c = the stream to write to, the rest of the variables are as above
-#define cfputs(a, b, c) 		b <= 97 ? fprintf(c, "\033[0;%dm%s\033[0m", b, a) : -1
-#define cfputc(a, b, c) 		fprintf(c, "\033[0;%dm%c\033[0m", b, a)
-#define cnputs(a, b, c) 		cfnputs(a, b, c, stdout); putchar('\n')		// c = the length here
-#define cputc(a, b, c)  		cfputc(a, b, c) // Same as fcputc() 
-
-#ifndef NO256
-#	define crputs(a, b)			fprintf(stdout, "\033[38;5;%dm%s\033[0m\n", b, a);
-#endif /* NO256 */
-
-// Standard color print for formatted string
-int cprintf(unsigned char color, const char *fmt, ...) {
-	if (color <= 97) {
-		printf("\033[0;%dm", color);
-		va_list args;
-		va_start(args, fmt);
-		int charsWritten = vfprintf(stdout, fmt, args);			// vfprintf returns the number of chars written
-		va_end(args);
-		fputs("\033[0m", stdout);
-		return charsWritten;
-	} else
-		return -1;		// No 256-color prompts with this function!
+#define endprint(s) fputs("\033[0m", s)		// Reset to default color
+void startprint(color_t c, FILE *s) {
+	if (c <= ANSI_OFFSET)
+		fprintf(s, "\033[0;%dm", colors[c]);
+	else
+		fprintf(s, "\033[38;5;%dm", colors[c]);	
 }
 
-// cprintf(), but you get to chose the stream
-int cfprintf(void *stream, unsigned char color, const char *fmt, ...) {
-	if (color <= 97) {
-		fprintf(stream, "\033[0;%dm", color);
-		va_list args;
-		va_start(args, fmt);
-		int charsWritten = vfprintf(stream, fmt, args);
-		va_end(args);
-		fputs("\033[0m", stream);
-		return charsWritten;
-	} else
-		return -1;
+int cfputs(const char *msg, color_t c, FILE *s) {
+	startprint(c, s);
+	fputs(msg, s);
+	endprint(s);
+	return 0;
 }
 
-// Specify how many characters to write to prevent buffer overflows (just in case)
-unsigned char cnprintf(unsigned int len, unsigned char color, const char *fmt, ...) {
-	if (color <= 97) {
-		char buf[len];
-		va_list args;
-		va_start(args, fmt);
-		vsnprintf(buf, len, fmt, args);
-		cfputs(buf, color, stdout);
-	  	va_end(args);
-	  	return 1;
-	} else 
-		return -1;
+int cfnputs(const char *m, color_t c, size_t n, FILE *s) {
+	startprint(c, s);
+	for(; n > 0 && *m != '\0'; m++, --n)
+		putc(*m, s);
+	endprint(s);
+	return 0;
 }
 
-// colorful fputs(), but manually specify how many characters
-unsigned char cfnputs(const char *amsg, unsigned char color, unsigned int len, void *stream) {
-	if (color <= 97) {
-		fprintf(stream, "\033[0;%dm", color);
-		for (; len > 0 && *amsg != '\0'; amsg++, --len)
-			putc(*amsg, stream);
-		fputs("\033[0m", stream);
-		return 1;
-	} else 
-		return -1;
+int cfprintf(FILE *s, color_t c, const char *fmt, ...) {
+	startprint(c, s);
+	va_list arg;
+	va_start(arg, fmt);
+	int w = vfprintf(s, fmt, arg);
+	va_end(arg);
+	endprint(s);
+	return w;
 }
 
-/*
-// Convert rgb(r, g, b) to 256-color terminal output
-unsigned short rgb_color(unsigned char r, unsigned char g, unsigned char b) {
-	return r * 36 + g * 6 + b + 16;
+int cnfprintf(FILE *s, color_t c, size_t n, const char *fmt, ...) {
+	char buf[n];
+	va_list arg;
+	va_start(arg, fmt);
+	int w = vsnprintf(buf, n, fmt, arg);
+	va_end(arg);
+	cfputs(buf, c, s);
+	return w;
 }
-*/
+
+// m = msg, c = color, s = stream
+#define cputc(m, c, s)			startprint(c, s); putc(m, s); endprint(s)
+#define cfputc(a, b, c)			cputc(a, b, c)
+#define cputchar(m, c)			cputc(m, c, stdout)
+
+#define cputs(m, c) 			cfputs(m, c, stdout); \
+								putchar('\n');
+
+#define cnputs(m, c, n) 		cfnputs(m, c, n, stdout); \
+								putchar('\n');
+
+#define cprintf(c, f, ...) 		cfprintf(stdout, c, f, __VA_ARGS__)
+#define cnprintf(c, n, f, ...)	cnfprintf(stdout, c, n, f, __VA_ARGS__)
 
 #endif /* _COLORPRINTER_H */
