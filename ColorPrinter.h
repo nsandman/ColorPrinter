@@ -10,7 +10,7 @@
 #define _COLORPRINTER_H
 
 #include <stdarg.h>
-#include <stdio.h>
+#include <stdio.h> // fprintf(), fputs(), vfprintf(), vsnprintf()
 
 typedef unsigned char color_t;
 
@@ -37,8 +37,8 @@ color_t colors[] = {
 #define light_gray				4
 
 #define bright_red 				5
-#define bright_green			6 
-#define bright_yellow			7
+#define bright_green				6 
+#define bright_yellow				7
 #define light_blue				8
 #define white					9
 
@@ -47,7 +47,7 @@ color_t colors[] = {
 #	define dark_gray			ANSI_OFFSET + 2
 #	define olive				ANSI_OFFSET + 3
 #	define magenta				ANSI_OFFSET + 4
-#endif /* NO256 */
+#endif // NO256
 
 /*
  * On Macs, the colors are weird and screwed up.
@@ -66,7 +66,7 @@ color_t colors[] = {
 #	define blue 				11
 #	define purple 				13
 #	define pink 				15
-#endif /* __APPLE__ && !MAC_OVERRIDE */
+#endif // __APPLE__ && !MAC_OVERRIDE
 
 // If you're a Brit and you keep forgetting about "gray" vs "grey", here
 #ifdef UK
@@ -74,7 +74,7 @@ color_t colors[] = {
 #	define dark_grey			dark_gray
 #	undef  light_gray
 #	undef  dark_gray
-#endif /* UK */
+#endif // UK
 
 void startprint(color_t, FILE*);
 int  cfputs(const char*, color_t, FILE*);
@@ -98,11 +98,9 @@ int cfputs(const char *msg, color_t c, FILE *s) {
 }
 
 int cfnputs(const char *m, color_t c, size_t n, FILE *s) {
-	startprint(c, s);
-	for(; n > 0 && *m != '\0'; m++, --n)
+	for(startprint(c, s); n>0 && *m!='\0'; m++, --n)
 		putc(*m, s);
-	endprint(s);
-	return 0;
+	return endprint(s);
 }
 
 int cfprintf(FILE *s, color_t c, const char *fmt, ...) {
@@ -139,4 +137,4 @@ int cnfprintf(FILE *s, color_t c, size_t n, const char *fmt, ...) {
 #define cprintf(c, f, ...) 		cfprintf(stdout, c, f, __VA_ARGS__)
 #define cnprintf(c, n, f, ...)	cnfprintf(stdout, c, n, f, __VA_ARGS__)
 
-#endif /* _COLORPRINTER_H */
+#endif // _COLORPRINTER_H
