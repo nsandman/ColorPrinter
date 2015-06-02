@@ -57,7 +57,7 @@ Now we will go through each of them individually.
 
 ####`cprintf()`
 ```c
-#define cprintf(c, f, ...) 		cfprintf(stdout, c, f, __VA_ARGS__)
+#define cprintf(c, f, ...)
 ```
 This function prints formatted string *f* with color *c* to stdout. It will then return the number of characters written.
 It is based off the C function `printf()`.
@@ -78,22 +78,20 @@ It is based off two C functions: `vsnprintf()` and `printf()`.
 
 ####`cputs()`
 ```c
-#define cputs(m, c) 			cfputs(m, c, stdout); \
-                          putchar('\n')
+#define cputs(m, c)
 ```
 This function prints string *m* to stdout with color *c*. It also automatically appends a newline. It is based off the C function `puts()`.
 
 ####`cnputs()`
 ```c
-#define cnputs(a, b, c)   cfnputs(a, b, c, stdout); \
-                          putchar('\n')
+#define cnputs(a, b, c)
 ```
 This function writes string *a* to stdout with color *b*. It will print until it reaches a null `\0` character or until *c* characters have been printed, whichever comes first.
 It is based off the C function `fputs()`.
 
 ####`cfputs()`
 ```c
-#define cfputs(a, b, c) 		cfnputs(a, b, strlen(a), c)
+#define cfputs(a, b, c)
 ```
 This function writes string *a* to stream *c* with color *b*.
 It is based off the C function `fputs()`.
@@ -107,14 +105,14 @@ It is based off two functions: `vsnprintf()` and `fputs()`.
 
 ####`cputc()` and `cfputc()`
 ```c
-#define cputc(m, c, s)			startprint(c, s); putc(m, s); endprint(s)
-#define cfputc(a, b, c)			cputc(a, b, c)
+#define cputc(a, b, c)
+#define cfputc(a, b, c)
 ```
 Both these functions print char *a* with color *b* to stream *c*.
 They are based off `putc()`.
 
 ####`cputchar()`
 ```c
-#define cputchar(m, c)			cputc(m, c, stdout)
+#define cputchar(m, c)
 ```
 This prints char *a* with color *b* to stdout. It is based off `putchar()`.
