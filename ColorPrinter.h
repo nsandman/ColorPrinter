@@ -83,7 +83,7 @@ int  cfprintf(FILE*, color_t, const char*, ...);
 int  cfnprintf(FILE*, color_t, size_t, const char*, ...);
 
 size_t strlen(const char *str) {
-	int i;
+	size_t i;
 	while(str[++i]);
 	return i;
 }
