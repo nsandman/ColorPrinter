@@ -113,6 +113,6 @@ They are based off `putc()`.
 
 ####`cputchar()`
 ```c
-#define cputchar(m, c)
+#define cputchar(a, b)
 ```
 This prints char *a* with color *b* to stdout. It is based off `putchar()`.
