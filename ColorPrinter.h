@@ -12,9 +12,10 @@
 #include <stdarg.h>
 #include <stdio.h> // fprintf(), fputs(), vfprintf(), vsnprintf()
 
+// "unsigned char" is annoying to type all the time
 typedef unsigned char color_t;
 
-// How many ANSI colors offset the xterm-256 ones?
+// How many ANSI colors are before the xterm-256 ones?
 #define ANSI_OFFSET 	15
 color_t colors[] = {
 	// ANSI colors
@@ -25,7 +26,7 @@ color_t colors[] = {
 	34, 25,
 	// pink
 	35, 95,
-	// 256-color
+	// xterm 256-color
 	208, 237, 64, 89
 };
 
@@ -42,12 +43,11 @@ color_t colors[] = {
 #define light_blue				8
 #define white					9
 
-#ifndef NO256
-#	define orange 				ANSI_OFFSET + 1
-#	define dark_gray			ANSI_OFFSET + 2
-#	define olive				ANSI_OFFSET + 3
-#	define magenta				ANSI_OFFSET + 4
-#endif // NO256
+// These are xterm-256 colors, and if "NO256" is defined, they will show up black.
+#define orange 				ANSI_OFFSET + 1
+#define dark_gray			ANSI_OFFSET + 2
+#define olive				ANSI_OFFSET + 3
+#define magenta				ANSI_OFFSET + 4
 
 /*
  * On Macs, the colors are weird and screwed up.
@@ -90,10 +90,12 @@ size_t strlen(const char *str) {
 
 #define endprint(s) fputs("\033[0m", s)		// Reset to default color
 void startprint(color_t c, FILE *s) {
-	if (c <= ANSI_OFFSET)
-		fprintf(s, "\033[0;%dm", colors[c]);
-	else
+	#ifndef NO256
+	if (c >= ANSI_OFFSET)
 		fprintf(s, "\033[38;5;%dm", colors[c]);	
+	else
+	#endif
+		fprintf(s, "\033[0;%dm", colors[c]);
 }
 
 int cfnputs(const char *m, color_t c, size_t n, FILE *s) {
