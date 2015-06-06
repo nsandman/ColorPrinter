@@ -3,6 +3,34 @@ ColorPrinter is an easy, cross-platform library to print in color.
 
 Printing in color may not seem like a big deal, but this can be a pain to implement perfectly. ColorPrinter is small, has little dependence on the standard library (only stdarg.h and stdio.h are used), and has a familiar syntax. Also, ColorPrinter is fully header-based, so no new ".c" files need to be compiled.
 
+###Building the Test
+The test is simple to build. To build with no weird magic, just run
+```bash
+make
+```
+
+However, if you want to build without the Mac fixed colors, or no 256-colors, or with UK color names, just use these Makefile targets:
+
+1. nomacfix
+2. uk
+3. 8color
+
+There is also "embedded", but it's a work in progress.
+
+So, just choose a target (or multiple ones) and then choose the "build" target.
+
+For example, you could run:
+```bash
+make nomacfix build
+```
+For default Linux colors on the Mac.
+
+Or, you could even run:
+```
+make nomacfix uk 8color build
+```
+For all of them.
+
 ###Colors Included
 Many colors are included, but if you'd like, you can `#define` your own! However, the ones that come by default are:
 
