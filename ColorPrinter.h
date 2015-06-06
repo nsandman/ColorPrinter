@@ -22,9 +22,9 @@
 								  	*((TYPE *)(AP - __va_rounded_size (TYPE))))
 	// end stdarg.h
 	// all the stdio functions are way too long to paste in, so...
-	// #include "bundledio.h"
+#	include "bundledio.h"
 	// FOR NOW, do this:
-#	include <stdio.h>
+	// #include <stdio.h>
 
 	// Also, for embedded systems:
 #	ifndef NULL
@@ -37,7 +37,7 @@
 // "unsigned char" is annoying to type all the time
 typedef unsigned char color_t;
 
-// How many ANSI colors are before the xterm-256 ones?
+// How many ANSI colors are before the xterm-256 ones (starting from zero)?
 #define ANSI_OFFSET 	15
 color_t colors[] = {
 	// ANSI colors
@@ -52,7 +52,7 @@ color_t colors[] = {
 	208, 237, 64, 89
 };
 
-// define the colors as macros
+// define the colors as macros with their position in the array
 #define red    					0
 #define green  					1
 #define yellow 					2
@@ -66,10 +66,10 @@ color_t colors[] = {
 #define white					9
 
 // These are xterm-256 colors, and if "NO256" is defined, they will show up black.
-#define orange 				ANSI_OFFSET + 1
-#define dark_gray			ANSI_OFFSET + 2
-#define olive				ANSI_OFFSET + 3
-#define magenta				ANSI_OFFSET + 4
+#define orange 					ANSI_OFFSET + 1
+#define dark_gray				ANSI_OFFSET + 2
+#define olive					ANSI_OFFSET + 3
+#define magenta					ANSI_OFFSET + 4
 
 /*
  * On Macs, the colors are weird and screwed up.
@@ -78,7 +78,8 @@ color_t colors[] = {
  * So just add pink while we're at it.
  * However, it's also possible to manually fix the colors
  * using Terminal preferences, so if the user has, they can
- * define MAC_OVERRIDE at compile time with gcc (or probably clang)
+ * define MAC_OVERRIDE at compile time with gcc (or probably clang,
+ * seeing as that's the default C compiler on OSX).
  */
 #if defined(__APPLE__) && !defined(MAC_OVERRIDE)
 #	define blue 				10
@@ -98,12 +99,17 @@ color_t colors[] = {
 #	undef  dark_gray
 #endif // UK
 
-// Prototypes and stuff
 size_t strlen(const char*);
-void startprint(color_t, FILE*);
-int  cfnputs(const char*, color_t, size_t, FILE*);
-int  cfprintf(FILE*, color_t, const char*, ...);
-int  cfnprintf(FILE*, color_t, size_t, const char*, ...);
+#ifndef __EMBEDDED__
+	// Function prototypes... 'nuff said
+	void startprint(color_t, FILE*);
+	int  cfnputs(const char*, color_t, size_t, FILE*);
+	int  cfprintf(FILE*, color_t, const char*, ...);
+	int  cfnprintf(FILE*, color_t, size_t, const char*, ...);
+#else
+	void startprint(color_t);
+	void endprint();
+#endif // __EMBEDDED__
 
 size_t strlen(const char *str) {
 	size_t i = 0;
@@ -111,54 +117,84 @@ size_t strlen(const char *str) {
 	return i;
 }
 
-#define endprint(s) fputs("\033[0m", s)		// Reset to default color
-void startprint(color_t c, FILE *s) {
-	#ifndef NO256
-	if (c >= ANSI_OFFSET)
-		fprintf(s, "\033[38;5;%dm", colors[c]);	
-	else
-	#endif
-		fprintf(s, "\033[0;%dm", colors[c]);
-}
+#ifndef __EMBEDDED__
+#	define endprint(s) fputs("\033[0m", s)		// Reset to default color
+	void startprint(color_t c, FILE *s) {
+		#ifndef NO256
+		if (c >= ANSI_OFFSET)
+			fprintf(s, "\033[38;5;%dm", colors[c]);	
+		else
+		#endif	// !NO256
+			fprintf(s, "\033[0;%dm", colors[c]);
+	}
 
-int cfnputs(const char *m, color_t c, size_t n, FILE *s) {
-	for(startprint(c, s); n>0 && *m!='\0'; m++, --n)
-		putc(*m, s);
-	return endprint(s);
-}
+	int cfnputs(const char *m, color_t c, size_t n, FILE *s) {
+		for(startprint(c, s); n>0 && *m!='\0'; m++, --n)
+			putc(*m, s);
+		return endprint(s);
+	}
 
-int cfprintf(FILE *s, color_t c, const char *fmt, ...) {
-	startprint(c, s);
-	va_list arg;
-	va_start(arg, fmt);
-	int w = vfprintf(s, fmt, arg);
-	va_end(arg);
-	endprint(s);
-	return w;
-}
+	int cfprintf(FILE *s, color_t c, const char *fmt, ...) {
+		startprint(c, s);
+		va_list arg;
+		va_start(arg, fmt);
+		int w = vfprintf(s, fmt, arg);
+		va_end(arg);
+		endprint(s);
+		return w;
+	}
 
-int cfnprintf(FILE *s, color_t c, size_t n, const char *fmt, ...) {
-	char buf[n];
-	va_list arg;
-	va_start(arg, fmt);
-	int w = vsnprintf(buf, n, fmt, arg);
-	va_end(arg);
-	cfnputs(buf, c, n, s);
-	return w;
-}
+	int cfnprintf(FILE *s, color_t c, size_t n, const char *fmt, ...) {
+		char buf[n];
+		va_list arg;
+		va_start(arg, fmt);
+		int w = vsnprintf(buf, n, fmt, arg);
+		va_end(arg);
+		cfnputs(buf, c, n, s);
+		return w;
+	}
+#else
+//#	define endprint	 puts("\033[0m")		// Reset to default color
+	void endprint() {
+		puts("\033[0m");
+	}
 
-// m = msg, c = color, s = stream
-#define cputc(m, c, s)			startprint(c, s); putc(m, s); endprint(s)
-#define cfputc(a, b, c)			cputc(a, b, c)
-#define cputchar(m, c)			cputc(m, c, stdout)
-#define cfputs(a, b, c) 		cfnputs(a, b, strlen(a), c)
-#define cputs(m, c) 			cfputs(m, c, stdout); \
-								putchar('\n');
+	void startprint(color_t c) {
+		#ifndef NO256
+		if (c >= ANSI_OFFSET)
+			printf("\033[38;5;%dm", colors[c]);	
+		else
+		#endif	// !NO256
+			printf("\033[0;%dm", colors[c]);
+	}
+#endif // __EMBEDDED__
 
-#define cnputs(m, c, n) 		cfnputs(m, c, n, stdout); \
-								putchar('\n');
+// m = msg, f = format string, c = color, s = stream
+#ifndef __EMBEDDED__		// don't use streams on embedded systems
+#	define cfputc(a, b, c)			cputc(a, b, c)
+#	define cputc(m, c, s)			startprint(c, s); \
+									putc(m, s); \
+									endprint(s)
+#	define cfputs(a, b, c) 			cfnputs(a, b, strlen(a), c)
+#	define cputchar(m, c)			cputc(m, c, stdout)
+#	define cputs(m, c) 				cfputs(m, c, stdout); \
+									putchar('\n');
 
-#define cprintf(c, f, ...) 		cfprintf(stdout, c, f, __VA_ARGS__)
-#define cnprintf(c, n, f, ...)	cfnprintf(stdout, c, n, f, __VA_ARGS__)
+#	define cnputs(m, c, n) 			cfnputs(m, c, n, stdout); \
+									putchar('\n');
+
+#	define cprintf(c, f, ...) 		cfprintf(stdout, c, f, __VA_ARGS__)
+#	define cnprintf(c, n, f, ...)	cfnprintf(stdout, c, n, f, __VA_ARGS__)
+#else
+#	define cputchar(m, c)			startprint(c); \
+									putchar(m);
+									endprint();
+#	define cprintf(c, f, ...)		startprint(c); \
+									printf(f, __VA_ARGS__);
+									endprint();
+#	define cputs(m, c)				startprint(c); \
+									puts(m);
+									endprint();	
+#endif		// __EMBEDDED__
 
 #endif // _COLORPRINTER_H

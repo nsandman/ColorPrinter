@@ -1,5 +1,6 @@
 #include "ColorPrinter.h"
 
+#ifndef __EMBEDDED__
 int main() {
 	cfputs("This is printed to stderr!\n", green, stderr);
 	cputs("And this is stdout!", blue);
@@ -11,3 +12,11 @@ int main() {
 	cnprintf(yellow, 57, "Use %s or %s to avoid buffer overflows!\n", "cn(f)printf", "cn(f)puts");
 	return 0;
 }
+#else
+int main() {
+	cputs("Blue printing!", blue);
+	cputchar('h', cyan);
+	cputchar('i', yellow);
+	return 0;
+}
+#endif

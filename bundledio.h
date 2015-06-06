@@ -1,3 +1,10 @@
+/*
+ * NOTE: This file assumes that the function for printing 
+ * is puts(), and that puts() DOESN'T automatically 
+ * append a newline. It also assumes that the function for
+ * printing a single char is putchar().
+ */
+
 /* vsprintf.c -- Lars Wirzenius & Linus Torvalds. */
 /*
  * Wirzenius wrote this portably, Torvalds fucked it up :-)
@@ -221,4 +228,14 @@ int vsprintf(char *buf, const char *fmt, va_list args)
 	}
 	*str = '\0';
 	return str-buf;
+}
+
+int printf(const char *fmt, ...) {
+	char *buf;
+	va_list arg;
+	va_start(arg, fmt);
+	int r = vsprintf(buf, fmt, arg);
+	va_end(arg);
+	puts(buf);
+	return r;
 }

@@ -3,7 +3,7 @@ CF =
 DEFINES =
 
 build:
-	$(CC) test.c $(CF) $(DEFINES) -Wall -o test
+	$(CC) test.c $(CF) $(DEFINES) -w -o test
 
 embedded:
 	$(eval DEFINES += -D__EMBEDDED__)
