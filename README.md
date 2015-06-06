@@ -1,7 +1,7 @@
 # ColorPrinter
 ColorPrinter is an easy, cross-platform library to print in color.
 
-Printing in color may not seem like a big deal, but this can be a pain to implement perfectly. ColorPrinter is small, has little dependence on the standard library (only stdarg.h and stdio.h are used), and has a familiar syntax. Also, ColorPrinter is fully header-based, so no new ".c" files need to be compiled.
+Printing in color may not seem like a big deal, but this can be a pain to implement perfectly. ColorPrinter is small, has little dependence on the standard library (only stdarg.h and stdio.h are used, and only stdio.h is required), and has a familiar syntax. Also, ColorPrinter is fully header-based, so no new ".c" files need to be compiled.
 
 ###Building the Test
 The test is simple to build. To build with no weird magic, just run
