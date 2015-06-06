@@ -11,17 +11,27 @@
 
 #ifndef __EMBEDDED__
 #	include <stdarg.h> // va_list, va_start(), va_end()
-#	include <stdio.h> // fprintf(), fputs(), vfprintf(), vsnprintf()
+#	include <stdio.h> // fprintf(), fputs(), vfprintf(), vsnprintf(), stdout, FILE*, size_t
 #else
  	// stdarg.h from Linux 0.0.1; va_end is from Microsoft
 	typedef char *va_list;
-	#define va_start(AP, LASTARG) (AP = ((char *) &(LASTARG) + __va_rounded_size (LASTARG)))
-	#define va_end(AP)      	  (AP = (va_list)0)
-	#define va_arg(AP, TYPE)	  (AP += __va_rounded_size (TYPE), \
-								  *((TYPE *) (AP - __va_rounded_size (TYPE))))
+#	define __va_rounded_size(TYPE)	(((sizeof (TYPE) + sizeof (int) - 1) / sizeof (int)) * sizeof (int))
+#	define va_start(AP, LASTARG) 	(AP = ((char *) &(LASTARG) + __va_rounded_size (LASTARG)))
+#	define va_end(AP)      	  		(AP = (va_list)0)
+#	define va_arg(AP, TYPE)	  		(AP += __va_rounded_size (TYPE), \
+								  	*((TYPE *)(AP - __va_rounded_size (TYPE))))
 	// end stdarg.h
 	// all the stdio functions are way too long to paste in, so...
-	#include "bundledio.h"
+	// #include "bundledio.h"
+	// FOR NOW, do this:
+#	include <stdio.h>
+
+	// Also, for embedded systems:
+#	ifndef NULL
+#		define NULL ((void*)0)
+#	endif		// NULL
+	// just in case.
+	typedef unsigned int size_t;
 #endif
 
 // "unsigned char" is annoying to type all the time
@@ -80,14 +90,13 @@ color_t colors[] = {
 #	define pink 				15
 #endif // __APPLE__ && !MAC_OVERRIDE
 
-// If you're a Brit and you keep forgetting about "gray" vs "grey", here
+// If you're a Brit and you keep forgetting about "gray" vs. "grey", here
 #ifdef UK
 #	define light_grey			light_gray
 #	define dark_grey			dark_gray
 #	undef  light_gray
 #	undef  dark_gray
 #endif // UK
-
 
 // Prototypes and stuff
 size_t strlen(const char*);

@@ -1,8 +1,9 @@
 CC = gcc
-DEFINES ?=
+CF =
+DEFINES =
 
 build:
-	$(CC) test.c $(DEFINES) -Wall -o test
+	$(CC) test.c $(CF) $(DEFINES) -Wall -o test
 
 embedded:
 	$(eval DEFINES += -D__EMBEDDED__)
