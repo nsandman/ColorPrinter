@@ -9,8 +9,20 @@
 #ifndef _COLORPRINTER_H
 #define _COLORPRINTER_H
 
-#include <stdarg.h>
-#include <stdio.h> // fprintf(), fputs(), vfprintf(), vsnprintf()
+#ifndef __EMBEDDED__
+#	include <stdarg.h> // va_list, va_start(), va_end()
+#	include <stdio.h> // fprintf(), fputs(), vfprintf(), vsnprintf()
+#else
+ 	// stdarg.h from Linux 0.0.1; va_end is from Microsoft
+	typedef char *va_list;
+	#define va_start(AP, LASTARG) (AP = ((char *) &(LASTARG) + __va_rounded_size (LASTARG)))
+	#define va_end(AP)      	  (AP = (va_list)0)
+	#define va_arg(AP, TYPE)	  (AP += __va_rounded_size (TYPE), \
+								  *((TYPE *) (AP - __va_rounded_size (TYPE))))
+	// end stdarg.h
+	// all the stdio functions are way too long to paste in, so...
+	#include "bundledio.h"
+#endif
 
 // "unsigned char" is annoying to type all the time
 typedef unsigned char color_t;
