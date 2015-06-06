@@ -3,7 +3,7 @@
 int main() {
 	cfputs("This is printed to stderr!\n", green, stderr);
 	cputs("And this is stdout!", blue);
-	cputchar('w', magenta);
+	cputc('w', magenta, stderr);
 	cputchar('t', cyan);
 	cputchar('f', yellow);
 	putchar('\n');

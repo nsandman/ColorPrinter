@@ -76,6 +76,8 @@ color_t colors[] = {
 #	undef  dark_gray
 #endif // UK
 
+
+// Prototypes and stuff
 size_t strlen(const char*);
 void startprint(color_t, FILE*);
 int  cfnputs(const char*, color_t, size_t, FILE*);
