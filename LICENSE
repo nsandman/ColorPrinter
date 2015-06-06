@@ -10,7 +10,7 @@ by Noah Sandman
 		iv. "The Original Author" refers to the individual who made The Code available under the NSPL.
 		v. The "original" Code is the code that was provided by The Author where The Author does not include you.
 		vi. "to modify" is to alter anything in The Code from its original state, and "modified" Code is Code that has been modified by The Author.
-		vii. "The Blacklist" hereby refers to a file somehow accessible using some form of The Code that lists full names and e-mail addresses (if it is publicly known) along with any relevant metadata in a human-readable format (and optionally, a machine-readable format). A "Blacklistee" is an individual or organization which is mentioned in The Blacklist or affiliated with an individual or organization mentioned in The Blacklist, and a "Non-Blacklistee" is an individual or organization which is not mentioned in The Blacklist.
+		vii. "The Blacklist" hereby refers to a file somehow accessible using some form of The Code that lists full names and e-mail addresses (if it is publicly known) along with any relevant metadata in a human-readable format (and optionally, a machine-readable format). A "Blacklistee" is an individual or organization which is mentioned in The Blacklist or affiliated with an individual or organization mentioned in The Blacklist, and a "Non-Blacklistee" is an individual or organization which is not mentioned in The Blacklist. If no Blacklist is provided, there are no blacklistees.
 		viii. The "source" form of The Code hereby refers to a form of The Code which can:
 			- Be read by humans
 			- Be compiled by a compiler or interpreted by an interpreter
